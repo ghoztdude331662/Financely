@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import Portfolio,Client,Stock
 from .forms import CreateUserForm
 from .sectorPerformance import  sectorPerformance
@@ -26,7 +26,7 @@ def dashboard(request):
 @login_required(login_url='basic_app:login')
 @allowed_users(allowed_roles=['Client'])
 def index(request):
-    if request.is_ajax():
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         res = None
         data = request.POST.get('searchData')
         item = getStockInfo(data)
@@ -117,7 +117,7 @@ def stock(request,symbol):
 
     print(recommendation)
     context ={'data':dumps(data),'item':dumps(item),'info':info,'piotroski_score':piotroski_score,'sentiment_data':dumps(sentiment_news_chart),'page_title':symbol+" Info",'recommendation':recommendation}
-    if request.is_ajax():
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         run = False
         res = None
         data = request.POST.get('myData')

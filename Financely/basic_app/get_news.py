@@ -8,10 +8,16 @@ def getNews(key):
 
     if res['status'] == 'ok':
         articles = res['articles']
-        random_news=random.sample(articles, 12)
-        for i in range(12):
-            #random_news[i]['sentiment'] = predict_sentiment([random_news[i]['description'][:100]])[0]
-            news[i]=random_news[i]
+        num_articles = len(articles)
+
+        # Ensure there are at least 12 articles
+        if num_articles >= 12:
+            random_news = random.sample(articles, 12)
+        else:
+            random_news = articles  # Use all available articles if fewer than 12
+
+        for i in range(len(random_news)):
+            news[i] = random_news[i]
 
 
     return news
@@ -23,10 +29,17 @@ def getNewsWithSentiment(key):
 
     if res['status'] == 'ok':
         articles = res['articles']
-        random_news=random.sample(articles, 12)
-        for i in range(12):
+        num_articles = len(articles)
+
+        # Ensure there are at least 12 articles
+        if num_articles >= 12:
+            random_news = random.sample(articles, 12)
+        else:
+            random_news = articles  # Use all available articles if fewer than 12
+
+        for i in range(len(random_news)):
             random_news[i]['sentiment'] = predict_sentiment([random_news[i]['description'][:100]])[0]
-            news[i]=random_news[i]
+            news[i] = random_news[i]
 
 
     return news
